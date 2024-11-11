@@ -1,4 +1,7 @@
 @extends('layouts.app')
+@if (auth()->check() && (auth()->user()->role != 'user' && auth()->user()->role !='admin'))
+    {{ abort(403, 'Unauthorized action.') }}
+@endif
 @section('content')
 <div class="container">
     <h2 class="mb-4">My Profile</h2>

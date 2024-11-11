@@ -52,8 +52,8 @@ class User extends Authenticatable
         ];
     }
 
-    public function complaint(): HasOne
+    public function complaints()
     {
-      return $this->hasOne(complaint::class); 
+      return $this->hasMany(complaint::class); 
     }
 }

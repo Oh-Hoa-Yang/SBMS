@@ -85,12 +85,12 @@
                 </li>
                 @if (auth()->user()->role == 'user')
                 <li class="nav-item">
-                  <a class="nav-link" href="#">Complaint Venue</a>
+                  <a class="nav-link {{ Route::is('manageComplaint.index') ? 'active' : ''}}" href="{{ route('manageComplaint.index')}}">Complaint Venue</a>
                 </li>
                 @endif
                 @if (auth()->user()->role == 'admin')
                 <li class="nav-item">
-                  <a class="nav-link" href="#">Complaint</a> <!--only viewed for staff-->
+                  <a class="nav-link {{ Route::is('manageComplaint.adminIndex') ? 'active' : ''}}" href="{{ route('manageComplaint.adminIndex') }}">Complaint</a>
                 </li>
                 @endif
                 @if (auth()->user()->role == 'admin')

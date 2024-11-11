@@ -13,10 +13,17 @@ return new class extends Migration
     {
         Schema::create('complaints', function(Blueprint $table) {
           $table->id();
+          $table->unsignedBigInteger('user_id');
           $table->string('title');
           $table->string('description');
           $table->string('status');
           $table->timestamps();
+          
+          //Adding the FK constraint with cascade on delete
+          $table->foreign('user_id')
+          ->references('id')
+          ->on('users')
+          ->onDelete('cascade');
         });
     }
 
