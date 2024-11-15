@@ -24,7 +24,7 @@
             <label for="email" class="col-sm-2 col-form-label">Email</label>
             <div class="col-sm-10">
                 <input type="email" class="form-control @error('email') is-invalid @enderror" id="email" name="email"
-                       value="{{ old('email', $user->email) }}">
+                       value="{{ old('email', $user->email) }}" disabled>
                 @error('email')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
