@@ -13,7 +13,7 @@
             <label for="name" class="col-sm-2 col-form-label">Name</label>
             <div class="col-sm-10">
                 <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name"
-                       value="{{ old('name', $user->name) }}">
+                       value="{{ old('name', $user->name) }}" required>
                 @error('name')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
