@@ -17,22 +17,20 @@ Auth::routes();
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::middleware(['auth'])->group(function () {
   Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-  // Route::resource('manageComplaint',ComplaintController::class);
+  // Resource route for profile management
+  Route::resource('manageProfile', ProfileController::class)->only(['index', 'edit', 'update', 'destroy']);
+  
+  // Resource route for user management
+  Route::resource('manageLogin', UserController::class);
+  
+  // Resource route for user's complaint
+  Route::resource('manageComplaint', ComplaintController::class)->except(['show']);
+  
+  //Admin Complaint View
+  Route::get('manageComplaint/adminIndex', [ComplaintController::class, 'adminIndex'])->name('manageComplaint.adminIndex');
+  
+  //Admin Complaint Delete
+  Route::delete('manageComplaint/adminDestroy/{manageComplaint}', [ComplaintController::class, 'adminDestroy'])->name('manageComplaint.adminDestroy');
 });
 
-// Resource route for profile management
-Route::resource('manageProfile', ProfileController::class)->only(['index', 'edit', 'update', 'destroy']);
 
-// Resource route for user management
-Route::resource('manageLogin', UserController::class);
-
-// Resource route for user's complaint
-Route::resource('manageComplaint', ComplaintController::class)->except(['show']);
-
-//Admin Complaint View
-Route::get('manageComplaint/adminIndex', [ComplaintController::class, 'adminIndex'])->name('manageComplaint.adminIndex');
-//Admin Complaint Delete
-Route::delete('manageComplaint/adminDestroy/{manageComplaint}', [ComplaintController::class, 'adminDestroy'])->name('manageComplaint.adminDestroy');
-
-
-// Route::get('manageLogin',[UserController::class,'index'])->name('manageLogin.index');
