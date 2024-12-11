@@ -40,13 +40,14 @@
                   </button>
 
                   {{-- Use 'form' to delete the teacher account --}}
-                  <form action="{{ route('manageLogin.destroy', $user->id) }}" class="d-inline-grid" method="POST">
+                  <form action="{{ route('manageLogin.destroy', $user->id) }}" class="d-inline-grid" method="POST" style="display:inline">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" class="btn btn-danger">
-                      <i class="bi bi-trash-fill"></i>
-                    </button>
+                  <button type="submit" class="btn btn-danger" title="Delete User" onclick="return confirm('Are you sure you want to delete this user?')">
+                       <i class="bi bi-trash-fill"></i> 
+                  </button>
                   </form>
+
                 </td>
               </tr>
             @endforeach
