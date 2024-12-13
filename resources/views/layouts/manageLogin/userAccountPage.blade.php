@@ -6,11 +6,31 @@
   <div class="container">
     <div class="row mb-4">
       <div class="col-md-6">
-        <h2><b>User Accounts</b></h2>
+        <h2><b>User Account Records </b></h2>
       </div>
-      <div class="d-flex justify-content-end align-items-center">
-        <a href="{{ route('manageLogin.create') }}" class="btn btn-primary">Add</a>
-      </div>
+
+
+    <!-- Card Body -->
+  <div class="card-body">
+    <!-- Top Controls: Search Form and Add New User Button -->
+    <div class="d-flex align-items-center mb-3">
+        <!-- Search Form -->
+        <form class="form-inline flex-grow-1" method="GET" action="{{ route('manageLogin.index') }}">
+            <div class="input-group w-100">
+                <input class="form-control" name="search" type="search" placeholder="Search by Name, Email, Phone No., Position, or Date of Birth" 
+                       value="{{ request('search') }}" aria-label="Search">
+                <button class="btn btn-outline-success" type="submit">
+                    <i class="bi bi-search"></i> Search
+                </button>
+            </div>
+        </form>
+
+        <!-- Add New User Button -->
+        <a href="{{ route('manageLogin.create') }}" class="btn btn-success btn-sm ml-3" title="Add New User">
+            <i class="fa fa-plus" aria-hidden="true"></i> Add
+        </a>
+    </div>
+    
       <div class="table-responsive">
         <table class="table table-striped">
           <thead>
