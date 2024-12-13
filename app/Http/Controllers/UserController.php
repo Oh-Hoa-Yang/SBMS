@@ -10,80 +10,93 @@ use function Laravel\Prompts\password;
 
 class UserController extends Controller
 {
-  public function index()
-  {
-    $datas = User::where('role', 'user')->paginate(8);
-    return view('layouts.manageLogin.userAccountPage', compact('datas'));
-  }
+    public function index(Request $request)
+    {
+        // Retrieve the search term from the request
+        $search = $request->input('search');
+        
+        // If a search term is provided, filter the users by the columns
+        $datas = User::where('role', 'user')
+            ->when($search, function ($query, $search) {
+                return $query->where('name', 'LIKE', "%{$search}%")
+                             ->orWhere('email', 'LIKE', "%{$search}%")
+                             ->orWhere('phoneNo', 'LIKE', "%{$search}%")
+                             ->orWhere('position', 'LIKE', "%{$search}%")
+                             ->orWhere('DOB', 'LIKE', "%{$search}%");
+            })
+            ->paginate(8);
 
-  public function create()
-  {
-    return view('layouts.manageLogin.userAddForm');
-  }
+        return view('layouts.manageLogin.userAccountPage', compact('datas'));
+    }
 
-  public function store(Request $request)
-  {
-    //Validate the input data
-    $validated = $request->validate([
-      'email' => 'required|email',
-      'password' => 'required|min:8|string',
-      'name' => 'nullable|string|max:225',
-      'phoneNo' => 'nullable|string|max:10',
-      'position' => 'nullable|string|max:225',
-      'DOB' => 'nullable|date|',
-      'role' => 'required|string',
-    ]);
+    public function create()
+    {
+        return view('layouts.manageLogin.userAddForm');
+    }
 
-    //Create the user after validation
-    User::create([
-      'email' => $validated['email'],
-      'password' => Hash::make($validated['password']),
-      'name' => $validated['name'],
-      'phoneNo' => $validated['phoneNo'],
-      'position' => $validated['position'],
-      'DOB' => $validated['DOB'],
-      'role' => $validated['role'],
-    ]);
+    public function store(Request $request)
+    {
+        // Validate the input data
+        $validated = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|min:8|string',
+            'name' => 'nullable|string|max:225',
+            'phoneNo' => 'nullable|string|max:10',
+            'position' => 'nullable|string|max:225',
+            'DOB' => 'nullable|date',
+            'role' => 'required|string',
+        ]);
 
-    return redirect()->route('manageLogin.index')->with('success', 'User Account Is Added!');
-  }
+        // Create the user after validation
+        User::create([
+            'email' => $validated['email'],
+            'password' => Hash::make($validated['password']),
+            'name' => $validated['name'],
+            'phoneNo' => $validated['phoneNo'],
+            'position' => $validated['position'],
+            'DOB' => $validated['DOB'],
+            'role' => $validated['role'],
+        ]);
 
-  public function edit(User $manageLogin)
-  {
-    return view('layouts.manageLogin.userEditForm', compact('manageLogin'));
-  }
+        return redirect()->route('manageLogin.index')->with('success', 'User Account Is Added!');
+    }
 
-  public function update(Request $request, User $manageLogin)
-  {
-    $validated = $request->validate([
-      'email' => 'required|email|unique:users,email,' . $manageLogin->id,
-      'password' => 'required|string|min:8',
-      'name' => 'nullable|string',
-      'phoneNo' => 'nullable|string|max:10',
-      'position' => 'nullable|string|max:225',
-      'DOB' => 'nullable|date',
-      'role' => 'required|string',
-    ]);
+    public function edit(User $manageLogin)
+    {
+        return view('layouts.manageLogin.userEditForm', compact('manageLogin'));
+    }
 
-    //Update the user's account with validated data
-    $manageLogin->update([
-      'email' => $validated['email'],
-      'password' => $validated['password'] ? Hash::make($validated['password']) : $manageLogin->password,
-      'name' => $validated['name'],
-      'phoneNo' => $validated['phoneNo'],
-      'position' => $validated['position'],
-      'DOB' => $validated['DOB'],
-      'role' => $validated['role'],
-    ]);
+    public function update(Request $request, User $manageLogin)
+    {
+        $validated = $request->validate([
+            'email' => 'required|email|unique:users,email,' . $manageLogin->id,
+            'password' => 'required|string|min:8',
+            'name' => 'nullable|string',
+            'phoneNo' => 'nullable|string|max:10',
+            'position' => 'nullable|string|max:225',
+            'DOB' => 'nullable|date',
+            'role' => 'required|string',
+        ]);
 
-    return redirect()->route('manageLogin.index')
-      ->with('success', 'User Account Updated!');
-  }
+        // Update the user's account with validated data
+        $manageLogin->update([
+            'email' => $validated['email'],
+            'password' => $validated['password'] ? Hash::make($validated['password']) : $manageLogin->password,
+            'name' => $validated['name'],
+            'phoneNo' => $validated['phoneNo'],
+            'position' => $validated['position'],
+            'DOB' => $validated['DOB'],
+            'role' => $validated['role'],
+        ]);
 
-  public function destroy(User $manageLogin)
-  {
-    $manageLogin->delete();
-    return redirect()->route('manageLogin.index')
-      ->with('success', 'User Account Deleted!');
-  }
+        return redirect()->route('manageLogin.index')
+            ->with('success', 'User Account Updated!');
+    }
+
+    public function destroy(User $manageLogin)
+    {
+        $manageLogin->delete();
+        return redirect()->route('manageLogin.index')
+            ->with('success', 'User Account Deleted!');
+    }
 }
