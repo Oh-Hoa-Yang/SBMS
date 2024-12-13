@@ -112,7 +112,7 @@
           <div class="col-md-2">
             <div class="col d-flex text-center m-4">
               <button type="button" class="btn btn-outline-secondary" onclick="window.history.back()">Cancel</button>
-              <button type="submit" class="btn btn-primary ms-3">Submit</button>
+              <button type="submit" class="btn btn-primary ms-3" onclick="return confirm('Are you sure you want to save these changes?')">Submit</button>
             </div>
           </div>
         </div>
