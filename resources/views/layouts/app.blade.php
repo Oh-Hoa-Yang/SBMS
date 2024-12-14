@@ -81,7 +81,8 @@
                 <a class="nav-link" href="#">Stock</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#">Booking</a>
+                <a class="nav-link {{ Route::is('manageBooking.index') ? 'active' : '' }}" href="{{ route('manageBooking.index') }}">Booking</a>
+
                 </li>
                 @if (auth()->user()->role == 'user')
                 <li class="nav-item">
