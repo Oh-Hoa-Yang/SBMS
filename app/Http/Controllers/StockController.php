@@ -7,17 +7,6 @@ use Illuminate\Http\Request;
 
 class StockController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-        $this->middleware(function ($request, $next) {
-            if (auth()->user()->role !== 'admin') {
-                return redirect()->route('home')->with('error', 'Unauthorized access.');
-            }
-            return $next($request);
-        });
-    }
-
     /**
      * Display a listing of the resource.
      */
