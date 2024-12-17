@@ -7,21 +7,7 @@
     <div class="outer-box">
         <h2 class="mb-4">Booking List</h2>
 
-        <!-- Search Bar -->
-        <div class="input-group mb-4">
-            <input 
-                type="text" 
-                class="form-control" 
-                id="searchInput" 
-                placeholder="Search for booking..." 
-                aria-label="Search" 
-                aria-describedby="basic-addon2" 
-                value="{{ request()->input('search_term') }}">
-            <div class="input-group-append">
-                <button class="btn btn-custom" type="button" onclick="searchBookings()">Search</button>
-            </div>
-        </div>
-
+   
         <!-- Search Results -->
         <h3 class="mb-3">Confirmed Booking</h3>
         <div class="list-group" id="userBookingList">
