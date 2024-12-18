@@ -9,17 +9,36 @@
     <div class="outer-box">
         <h2 class="mb-4">Stock List</h2>
 
-        <!-- Search Bar -->
-        <div class="input-group mb-4">
-            <input 
-                type="text" 
-                class="form-control" 
-                id="searchInput" 
-                placeholder="Search for stock..." 
-                aria-label="Search" 
-                aria-describedby="basic-addon2">
-            <div class="input-group-append">
-                <button class="btn btn-custom" type="button" onclick="searchStocks()">Search</button>
+        <!-- Search and Sort Bar -->
+        <div class="d-flex justify-content-between mb-4">
+            <div class="mr-2" style="margin-right: 10px;">
+                <div class="input-group">
+                    <input 
+                        type="text" 
+                        class="form-control" 
+                        id="searchInput" 
+                        placeholder="Search for stock..." 
+                        aria-label="Search" 
+                        aria-describedby="basic-addon2">
+                    <div class="input-group-append">
+                        <button class="btn btn-custom" type="button" onclick="searchStocks()">Search</button>
+                    </div>
+                </div>
+            </div>
+            <div class="dropdown">
+                <button class="btn btn-custom dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                    Sort By
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <li><a class="dropdown-item sort-link" href="{{ route('manageStock.index', ['sort' => 'created_at', 'order' => 'asc']) }}" data-sort="created_at" data-order="asc">Added Date (Asc)</a></li>
+                    <li><a class="dropdown-item sort-link" href="{{ route('manageStock.index', ['sort' => 'created_at', 'order' => 'desc']) }}" data-sort="created_at" data-order="desc">Added Date (Desc)</a></li>
+                    <li><a class="dropdown-item sort-link" href="{{ route('manageStock.index', ['sort' => 'expiry_date', 'order' => 'asc']) }}" data-sort="expiry_date" data-order="asc">Expiry Date (Asc)</a></li>
+                    <li><a class="dropdown-item sort-link" href="{{ route('manageStock.index', ['sort' => 'expiry_date', 'order' => 'desc']) }}" data-sort="expiry_date" data-order="desc">Expiry Date (Desc)</a></li>
+                    <li><a class="dropdown-item sort-link" href="{{ route('manageStock.index', ['sort' => 'quantity', 'order' => 'asc']) }}" data-sort="quantity" data-order="asc">Stock (Asc)</a></li>
+                    <li><a class="dropdown-item sort-link" href="{{ route('manageStock.index', ['sort' => 'quantity', 'order' => 'desc']) }}" data-sort="quantity" data-order="desc">Stock (Desc)</a></li>
+                    <li><a class="dropdown-item sort-link" href="{{ route('manageStock.index', ['sort' => 'unit_price', 'order' => 'asc']) }}" data-sort="unit_price" data-order="asc">Unit Price (Asc)</a></li>
+                    <li><a class="dropdown-item sort-link" href="{{ route('manageStock.index', ['sort' => 'unit_price', 'order' => 'desc']) }}" data-sort="unit_price" data-order="desc">Unit Price (Desc)</a></li>
+                </ul>
             </div>
         </div>
 
@@ -32,8 +51,8 @@
                         <th class="text-center">Stock</th>
                         <th class="text-center">Unit Price (RM)</th>
                         <th class="text-center">Unit Type</th>
-                        <th class="text-center">Status</th>
                         <th class="text-center">Expiry Date</th>
+                        <th class="text-center">Added At</th>
                         <th class="text-center">Action</th>
                     </tr>
                 </thead>
@@ -60,16 +79,16 @@
                             @endphp
                             <tr>
                                 <td>{{ $stock->name }}</td>
-                                <td class="text-center">{{ $stock->quantity }}</td>
-                                <td class="text-center">RM {{ number_format($stock->unit_price, 2) }}</td>
-                                <td class="text-center">{{ ucfirst($stock->unit_type) }}</td>
                                 <td class="text-center">
-                                    @if($stock->active)
-                                        <span class="badge bg-success">Active</span>
-                                    @else
-                                        <span class="badge bg-secondary">Inactive</span>
+                                    {{ $stock->quantity }}
+                                    @if($stock->quantity < $stock->min_quantity)
+                                        <div class="low-stock-warning">
+                                            <span class="badge bg-warning text-dark">Low Stock</span>
+                                        </div>
                                     @endif
                                 </td>
+                                <td class="text-center">RM {{ number_format($stock->unit_price, 2) }}</td>
+                                <td class="text-center">{{ ucfirst($stock->unit_type) }}</td>
                                 <td class="text-center {{ $expiryClass }}">
                                     <div class="expiry-container">
                                         <div class="expiry-date">
@@ -90,6 +109,7 @@
                                         @endif
                                     </div>
                                 </td>
+                                <td class="text-center">{{ $stock->created_at->format('d M Y') }}</td>
                                 <td class="text-center">
                                     <div class="btn-group">
                                         <button type="button" class="btn btn-custom dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
@@ -206,6 +226,10 @@
         font-size: 0.85em;
     }
 
+    .low-stock-warning {
+        font-size: 0.85em;
+    }
+
     /* Make table more compact on smaller screens */
     @media (max-width: 992px) {
         .table {
@@ -242,11 +266,13 @@
         for (let row of rows) {
             const productName = row.cells[0].textContent.toLowerCase();
             const unitType = row.cells[3].textContent.toLowerCase();
-            const expiryDate = row.cells[5].textContent.toLowerCase();
+            const expiryDate = row.cells[4].textContent.toLowerCase();
+            const addedAt = row.cells[5].textContent.toLowerCase();
             
             if (productName.includes(searchTerm) || 
                 unitType.includes(searchTerm) || 
-                expiryDate.includes(searchTerm)) {
+                expiryDate.includes(searchTerm) ||
+                addedAt.includes(searchTerm)) {
                 row.style.display = '';
                 stockFound = true;
             } else {
@@ -267,6 +293,22 @@
         const deleteModal = new bootstrap.Modal(modal);
         deleteModal.show();
     }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const sortLinks = document.querySelectorAll('.sort-link');
+
+        sortLinks.forEach(link => {
+            link.addEventListener('click', function(event) {
+                event.preventDefault();
+                const sort = this.dataset.sort;
+                const order = this.dataset.order;
+                const currentUrl = new URL(this.href);
+                currentUrl.searchParams.set('order', order);
+                this.href = currentUrl.toString();
+                window.location.href = this.href;
+            });
+        });
+    });
 </script>
 
 @if(session('success'))
