@@ -67,14 +67,20 @@
             </div>
           </div>
           <div class="form-group row m-3">
-            <label for="position" class="col-sm-4 col-form-label">Position</label>
-            <div class="col-sm-8">
-              <input type="text" class="form-control @error('position') is-invalid @enderror" id="position"
-                name="position" value="{{ old('position') }}">
-              @error('position')
-                <div class="invalid-feedback">
-                  {{ $message }}
-                </div>
+  <label for="position" class="col-sm-4 col-form-label">Position</label>
+  <div class="col-sm-8">
+    <select class="form-control @error('position') is-invalid @enderror" id="position" name="position">
+      <option value="">Select Position</option>
+      <option value="Manager" {{ old('position') == 'Manager' ? 'selected' : '' }}>Manager</option>
+      <option value="Accountant" {{ old('position') == 'Accountant' ? 'selected' : '' }}>Accountant</option>
+      <option value="Stock Manager" {{ old('position') == 'Stock Manager' ? 'selected' : '' }}>Stock Manager</option>
+      <option value="Sales Associate" {{ old('position') == 'Sales Associate' ? 'selected' : '' }}>Sales Associate</option>
+      <!-- Add more positions as needed -->
+    </select>
+    @error('position')
+      <div class="invalid-feedback">
+        {{ $message }}
+      </div>
               @enderror
             </div>
           </div>
