@@ -51,7 +51,6 @@ class StockController extends Controller
             'min_quantity' => 'required|integer|min:0',
             'unit_price' => 'required|numeric|min:0',
             'unit_type' => 'required|string|max:50',
-            'active' => 'boolean'
         ]);
 
         Stock::create($validated);
@@ -84,7 +83,6 @@ class StockController extends Controller
             'min_quantity' => 'required|integer|min:0',
             'unit_price' => 'required|numeric|min:0',
             'unit_type' => 'required|string|max:50',
-            'active' => 'boolean'
         ]);
 
         $stock->update($validated);

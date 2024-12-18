@@ -87,20 +87,6 @@
                 @enderror
             </div>
 
-            <div class="mb-3">
-                <div class="form-check">
-                    <input class="form-check-input" 
-                           type="checkbox" 
-                           id="active" 
-                           name="active" 
-                           value="1" 
-                           {{ old('active', $stock->active) ? 'checked' : '' }}>
-                    <label class="form-check-label" for="active">
-                        Active
-                    </label>
-                </div>
-            </div>
-
             <!-- Hidden fields -->
             <input type="hidden" name="sku" value="{{ $stock->sku }}">
             <input type="hidden" name="min_quantity" value="{{ $stock->min_quantity }}">
