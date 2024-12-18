@@ -10,8 +10,8 @@
         <h2 class="mb-4">Stock List</h2>
 
         <!-- Search and Sort Bar -->
-        <div class="d-flex justify-content-between mb-4 gap-2">
-            <div class="mr-2" style="margin-right: 10px;">
+        <div class="d-flex mb-4 gap-2" style="width: 100%; flex-wrap: wrap;">
+            <div style="display: flex; gap: 10px; width: 100%;">
                 <div class="input-group">
                     <input 
                         type="text" 
@@ -24,17 +24,17 @@
                         <button class="btn btn-custom" type="button" onclick="searchStocks()">Search</button>
                     </div>
                 </div>
-            </div>
-            <div class="dropdown">
-                <button class="btn btn-custom dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                    Sort By
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <li><a class="dropdown-item" href="{{ route('manageStock.index', ['sort' => 'created_at']) }}">Added Date</a></li>
-                    <li><a class="dropdown-item" href="{{ route('manageStock.index', ['sort' => 'expiry_date']) }}">Expiry Date</a></li>
-                    <li><a class="dropdown-item" href="{{ route('manageStock.index', ['sort' => 'quantity']) }}">Stock</a></li>
-                    <li><a class="dropdown-item" href="{{ route('manageStock.index', ['sort' => 'unit_price']) }}">Unit Price</a></li>
-                </ul>
+                <div class="dropdown">
+                    <button class="btn btn-custom dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                        Sort By
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <li><a class="dropdown-item" href="{{ route('manageStock.index', ['sort' => 'created_at']) }}">Added Date</a></li>
+                        <li><a class="dropdown-item" href="{{ route('manageStock.index', ['sort' => 'expiry_date']) }}">Expiry Date</a></li>
+                        <li><a class="dropdown-item" href="{{ route('manageStock.index', ['sort' => 'quantity']) }}">Stock</a></li>
+                        <li><a class="dropdown-item" href="{{ route('manageStock.index', ['sort' => 'unit_price']) }}">Unit Price</a></li>
+                    </ul>
+                </div>
             </div>
         </div>
 
