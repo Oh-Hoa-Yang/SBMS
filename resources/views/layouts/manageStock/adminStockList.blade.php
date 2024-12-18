@@ -10,7 +10,7 @@
         <h2 class="mb-4">Stock List</h2>
 
         <!-- Search and Sort Bar -->
-        <div class="d-flex justify-content-between mb-4">
+        <div class="d-flex justify-content-between mb-4 gap-2">
             <div class="mr-2" style="margin-right: 10px;">
                 <div class="input-group">
                     <input 
@@ -30,14 +30,10 @@
                     Sort By
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <li><a class="dropdown-item sort-link" href="{{ route('manageStock.index', ['sort' => 'created_at', 'order' => 'asc']) }}" data-sort="created_at" data-order="asc">Added Date (Asc)</a></li>
-                    <li><a class="dropdown-item sort-link" href="{{ route('manageStock.index', ['sort' => 'created_at', 'order' => 'desc']) }}" data-sort="created_at" data-order="desc">Added Date (Desc)</a></li>
-                    <li><a class="dropdown-item sort-link" href="{{ route('manageStock.index', ['sort' => 'expiry_date', 'order' => 'asc']) }}" data-sort="expiry_date" data-order="asc">Expiry Date (Asc)</a></li>
-                    <li><a class="dropdown-item sort-link" href="{{ route('manageStock.index', ['sort' => 'expiry_date', 'order' => 'desc']) }}" data-sort="expiry_date" data-order="desc">Expiry Date (Desc)</a></li>
-                    <li><a class="dropdown-item sort-link" href="{{ route('manageStock.index', ['sort' => 'quantity', 'order' => 'asc']) }}" data-sort="quantity" data-order="asc">Stock (Asc)</a></li>
-                    <li><a class="dropdown-item sort-link" href="{{ route('manageStock.index', ['sort' => 'quantity', 'order' => 'desc']) }}" data-sort="quantity" data-order="desc">Stock (Desc)</a></li>
-                    <li><a class="dropdown-item sort-link" href="{{ route('manageStock.index', ['sort' => 'unit_price', 'order' => 'asc']) }}" data-sort="unit_price" data-order="asc">Unit Price (Asc)</a></li>
-                    <li><a class="dropdown-item sort-link" href="{{ route('manageStock.index', ['sort' => 'unit_price', 'order' => 'desc']) }}" data-sort="unit_price" data-order="desc">Unit Price (Desc)</a></li>
+                    <li><a class="dropdown-item" href="{{ route('manageStock.index', ['sort' => 'created_at']) }}">Added Date</a></li>
+                    <li><a class="dropdown-item" href="{{ route('manageStock.index', ['sort' => 'expiry_date']) }}">Expiry Date</a></li>
+                    <li><a class="dropdown-item" href="{{ route('manageStock.index', ['sort' => 'quantity']) }}">Stock</a></li>
+                    <li><a class="dropdown-item" href="{{ route('manageStock.index', ['sort' => 'unit_price']) }}">Unit Price</a></li>
                 </ul>
             </div>
         </div>
@@ -293,22 +289,6 @@
         const deleteModal = new bootstrap.Modal(modal);
         deleteModal.show();
     }
-
-    document.addEventListener('DOMContentLoaded', function() {
-        const sortLinks = document.querySelectorAll('.sort-link');
-
-        sortLinks.forEach(link => {
-            link.addEventListener('click', function(event) {
-                event.preventDefault();
-                const sort = this.dataset.sort;
-                const order = this.dataset.order;
-                const currentUrl = new URL(this.href);
-                currentUrl.searchParams.set('order', order);
-                this.href = currentUrl.toString();
-                window.location.href = this.href;
-            });
-        });
-    });
 </script>
 
 @if(session('success'))

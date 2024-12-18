@@ -12,26 +12,11 @@ class StockController extends Controller
      */
     public function index(Request $request)
     {
-        $sort = $request->query('sort');
-        $order = $request->query('order', 'asc');
-
-        $orderBy = 'created_at';
-        switch ($sort) {
-            case 'created_at':
-                $orderBy = 'created_at';
-                break;
-            case 'expiry_date':
-                $orderBy = 'expiry_date';
-                break;
-            case 'quantity':
-                $orderBy = 'quantity';
-                break;
-            case 'unit_price':
-                $orderBy = 'unit_price';
-                break;
-        }
-
-        $stocks = Stock::orderBy($orderBy, $order)->paginate(10);
+        $stocks = Stock::orderBy('created_at', 'desc')
+            ->orderBy('expiry_date', 'asc')
+            ->orderBy('quantity', 'asc')
+            ->orderBy('unit_price', 'asc')
+            ->paginate(10);
         return view('layouts.manageStock.adminStockList', compact('stocks'));
     }
 
